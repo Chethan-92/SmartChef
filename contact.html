@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartChef AI - Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070707;--card:#0f0f0f;--border:#1e1e1e;--accent:#f5c842;--accent2:#f07832;--text:#f2ede4;--muted:#555;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:"Outfit",sans-serif;min-height:100vh;}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(7,7,7,0.96);backdrop-filter:blur(24px);z-index:100;}
+.nav-logo{font-family:"Cormorant Garamond",serif;font-size:24px;background:linear-gradient(135deg,var(--accent),var(--accent2));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 5s linear infinite;}
+@keyframes shine{to{background-position:200% center;}}
+.nav-links{display:flex;gap:4px;}
+.nav-link{padding:8px 18px;border-radius:8px;color:var(--muted);font-size:14px;text-decoration:none;transition:color 0.2s;position:relative;}
+.nav-link.active{color:var(--accent);}
+.nav-link::after{content:"";position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent);border-radius:2px;transition:width 0.3s;}
+.nav-link:hover::after,.nav-link.active::after{width:60%;}
+.logout-btn{padding:9px 20px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;font-size:13px;cursor:pointer;font-family:"Outfit",sans-serif;transition:all 0.25s;position:relative;overflow:hidden;}
+.logout-btn::before{content:"";position:absolute;inset:0;background:rgba(240,80,80,0.08);transform:scaleX(0);transform-origin:right;transition:transform 0.3s;}
+.logout-btn:hover::before{transform:scaleX(1);}
+.logout-btn:hover{border-color:rgba(240,80,80,0.5);color:#f05050;}
+.page{max-width:1000px;margin:0 auto;padding:72px 24px;position:relative;z-index:1;}
+.page-glow{position:fixed;top:0;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(245,200,66,0.05),transparent 65%);pointer-events:none;z-index:0;}
+.ph{margin-bottom:64px;animation:fadeUp 0.6s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+.ptag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.pt{font-family:"Cormorant Garamond",serif;font-size:56px;margin-bottom:12px;line-height:1.05;}
+.ps{color:var(--muted);font-size:16px;line-height:1.7;max-width:480px;}
+.content{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start;}
+/* INFO CARDS */
+.info-col{display:flex;flex-direction:column;gap:16px;animation:fadeUp 0.6s 0.1s ease both;}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;align-items:flex-start;gap:16px;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden;}
+.info-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,200,66,0.04),transparent);opacity:0;transition:opacity 0.3s;}
+.info-card:hover::before{opacity:1;}
+.info-card:hover{border-color:rgba(245,200,66,0.25);transform:translateX(6px);}
+.ic-icon{width:44px;height:44px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:transform 0.3s;}
+.info-card:hover .ic-icon{transform:scale(1.1) rotate(-5deg);}
+.ic-text{flex:1;}
+.ic-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+.ic-val{font-size:13px;color:var(--muted);}
+.social-row{display:flex;gap:10px;margin-top:8px;}
+.soc-btn{width:40px;height:40px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all 0.25s;text-decoration:none;}
+.soc-btn:hover{border-color:rgba(245,200,66,0.4);transform:translateY(-3px);background:rgba(245,200,66,0.06);}
+/* FORM */
+.form-col{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;position:relative;overflow:hidden;animation:fadeUp 0.6s 0.2s ease both;}
+.form-col::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);}
+.form-title{font-family:"Cormorant Garamond",serif;font-size:30px;margin-bottom:6px;}
+.form-sub{color:var(--muted);font-size:13px;margin-bottom:32px;}
+.field{margin-bottom:20px;}
+.field label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text);padding:14px 16px;border-radius:12px;font-size:14px;font-family:"Outfit",sans-serif;outline:none;transition:all 0.3s;resize:none;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(245,200,66,0.05);}
+.field input::placeholder,.field textarea::placeholder{color:#2a2a2a;}
+.field select option{background:#111;color:var(--text);}
+/* STAR RATING in form */
+.star-row{display:flex;gap:6px;margin-top:4px;}
+.star-btn{font-size:28px;cursor:pointer;transition:transform 0.15s;color:#2a2a2a;background:none;border:none;line-height:1;}
+.star-btn:hover,.star-btn.on{color:var(--accent);}
+.star-btn:hover{transform:scale(1.2) rotate(-5deg);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.submit-btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:15px;font-weight:600;font-family:"Outfit",sans-serif;cursor:pointer;margin-top:8px;position:relative;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;}
+.sb-bg,.sb-bg2{position:absolute;inset:0;border-radius:12px;}
+.sb-bg{background:linear-gradient(135deg,var(--accent),var(--accent2));}
+.sb-bg2{background:linear-gradient(135deg,var(--accent2),#ffd700);opacity:0;transition:opacity 0.3s;}
+.submit-btn:hover .sb-bg2{opacity:1;}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(245,200,66,0.3);}
+.submit-btn span{position:relative;z-index:1;color:#050505;}
+.success-overlay{position:absolute;inset:0;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;opacity:0;pointer-events:none;transition:opacity 0.4s;border-radius:20px;}
+.success-overlay.show{opacity:1;pointer-events:all;}
+.success-icon{font-size:64px;margin-bottom:20px;animation:successBounce 0.6s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes successBounce{from{transform:scale(0);}to{transform:scale(1);}}
+.success-title{font-family:"Cormorant Garamond",serif;font-size:28px;margin-bottom:8px;}
+.success-sub{color:var(--muted);font-size:14px;margin-bottom:24px;text-align:center;}
+.reset-btn{padding:12px 28px;background:transparent;border:1px solid rgba(245,200,66,0.3);color:var(--accent);border-radius:10px;font-size:14px;cursor:pointer;font-family:"Outfit",sans-serif;transition:all 0.2s;}
+.reset-btn:hover{background:rgba(245,200,66,0.08);}
+@media(max-width:800px){.content{grid-template-columns:1fr;}.page{padding:48px 20px;}nav{padding:0 20px;}.frow{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="page-glow"></div>
+<nav>
+  <div class="nav-logo">SmartChef</div>
+  <div class="nav-links">
+    <a href="home.html" class="nav-link">Home</a>
+    <a href="dashboard.html" class="nav-link">Search</a>
+    <a href="favorites.html" class="nav-link">Favorites</a>
+    <a href="contact.html" class="nav-link active">Contact</a>
+  </div>
+  <button class="logout-btn" onclick="logout()">&#8592; Logout</button>
+</nav>
+<div class="page">
+  <div class="ph">
+    <div class="ptag">Get in Touch</div>
+    <div class="pt">We would love to<br>hear from you</div>
+    <div class="ps">Have feedback, a bug to report, or a recipe suggestion? Send us a message and we will get back to you.</div>
+  </div>
+  <div class="content">
+    <div class="info-col">
+      <div class="info-card" onclick="copyEmail()">
+        <div class="ic-icon">&#128140;</div>
+        <div class="ic-text">
+          <div class="ic-title">Email Us</div>
+          <div class="ic-val" id="emailVal">smartchef@gmail.com</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">&#128205;</div>
+        <div class="ic-text">
+          <div class="ic-title">Location</div>
+          <div class="ic-val">Chennai, Tamil Nadu, India</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">&#9200;</div>
+        <div class="ic-text">
+          <div class="ic-title">Response Time</div>
+          <div class="ic-val">Usually within 24 hours</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">&#127775;</div>
+        <div class="ic-text">
+          <div class="ic-title">Follow Us</div>
+          <div class="social-row">
+            <a href="#" class="soc-btn">&#128248;</a>
+            <a href="#" class="soc-btn">&#128279;</a>
+            <a href="#" class="soc-btn">&#128187;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-col" id="formCol">
+      <div class="form-title">Send a Message</div>
+      <div class="form-sub">Fill in the form and we will respond shortly</div>
+      <div class="frow">
+        <div class="field"><label>Your Name</label><input type="text" id="cName" placeholder="Chef Ramu"></div>
+        <div class="field"><label>Email</label><input type="email" id="cEmail" placeholder="you@email.com"></div>
+      </div>
+      <div class="field">
+        <label>Topic</label>
+        <select id="cTopic">
+          <option value="">Select a topic...</option>
+          <option value="bug">Bug Report</option>
+          <option value="feedback">General Feedback</option>
+          <option value="recipe">Recipe Suggestion</option>
+          <option value="feature">Feature Request</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Rate Your Experience</label>
+        <div class="star-row" id="formStars">
+          <button class="star-btn" data-v="1" onclick="setFormRating(1)">&#9733;</button>
+          <button class="star-btn" data-v="2" onclick="setFormRating(2)">&#9733;</button>
+          <button class="star-btn" data-v="3" onclick="setFormRating(3)">&#9733;</button>
+          <button class="star-btn" data-v="4" onclick="setFormRating(4)">&#9733;</button>
+          <button class="star-btn" data-v="5" onclick="setFormRating(5)">&#9733;</button>
+        </div>
+      </div>
+      <div class="field"><label>Message</label><textarea id="cMsg" rows="5" placeholder="Tell us what you think, report a bug, or suggest a recipe..."></textarea></div>
+      <button class="submit-btn" onclick="sendMsg()"><div class="sb-bg"></div><div class="sb-bg2"></div><span>Send Message &#8594;</span></button>
+      <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">&#127881;</div>
+        <div class="success-title">Message Sent!</div>
+        <div class="success-sub">Thank you for reaching out.<br>We will get back to you within 24 hours.</div>
+        <button class="reset-btn" onclick="resetForm()">Send Another</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+if(!localStorage.getItem('token'))window.location.replace('login.html');
+function logout(){document.body.style.transition='opacity 0.5s';document.body.style.opacity='0';setTimeout(()=>{localStorage.removeItem('token');window.location.replace('login.html');},500);}
+// particles
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}resize();addEventListener('resize',resize);
+const pts=[];for(let i=0;i<50;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+0.3,s:Math.random()*0.18+0.04,op:Math.random()*0.25+0.04,dr:(Math.random()-.5)*0.08});
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(245,200,66,'+p.op+')';ctx.fill();p.y-=p.s;p.x+=p.dr;if(p.y<0){p.y=canvas.height;p.x=Math.random()*canvas.width;}});requestAnimationFrame(draw);}draw();
+// stars
+let formRating=0;
+function setFormRating(v){
+  formRating=v;
+  document.querySelectorAll('#formStars .star-btn').forEach((s,i)=>{s.classList.toggle('on',i<v);});
+}
+document.querySelectorAll('#formStars .star-btn').forEach((s,i)=>{
+  s.addEventListener('mouseenter',()=>document.querySelectorAll('#formStars .star-btn').forEach((b,j)=>b.classList.toggle('on',j<=i)));
+  s.addEventListener('mouseleave',()=>document.querySelectorAll('#formStars .star-btn').forEach((b,j)=>b.classList.toggle('on',j<formRating)));
+});
+function copyEmail(){const v=document.getElementById('emailVal');navigator.clipboard.writeText(v.textContent);const orig=v.textContent;v.textContent='Copied!';v.style.color='var(--accent)';setTimeout(()=>{v.textContent=orig;v.style.color='';},1500);}
+function sendMsg(){
+  const name=document.getElementById('cName').value.trim();
+  const email=document.getElementById('cEmail').value.trim();
+  const msg=document.getElementById('cMsg').value.trim();
+  if(!name||!email||!msg)return alert('Please fill in name, email and message.');
+  // Save to localStorage for demo
+  const feedback={name,email,topic:document.getElementById('cTopic').value,rating:formRating,message:msg,date:new Date().toLocaleDateString()};
+  const all=JSON.parse(localStorage.getItem('feedbacks')||'[]');
+  all.push(feedback);localStorage.setItem('feedbacks',JSON.stringify(all));
+  document.getElementById('successOverlay').classList.add('show');
+}
+function resetForm(){
+  document.getElementById('cName').value='';document.getElementById('cEmail').value='';
+  document.getElementById('cTopic').value='';document.getElementById('cMsg').value='';
+  formRating=0;document.querySelectorAll('#formStars .star-btn').forEach(s=>s.classList.remove('on'));
+  document.getElementById('successOverlay').classList.remove('show');
+}
+</script>
+</body>
+</html>

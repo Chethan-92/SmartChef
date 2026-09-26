@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartChef AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070707;--card:#0f0f0f;--border:#1e1e1e;--accent:#f5c842;--accent2:#f07832;--text:#f2ede4;--muted:#555;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:"Outfit",sans-serif;min-height:100vh;display:flex;overflow:hidden;}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.glow{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;}
+.g1{width:600px;height:600px;background:rgba(245,200,66,0.06);top:-200px;left:-150px;animation:gd 14s ease-in-out infinite;}
+.g2{width:500px;height:500px;background:rgba(240,120,50,0.05);bottom:-150px;right:-100px;animation:gd 14s ease-in-out infinite reverse;}
+@keyframes gd{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,-30px);}}
+
+/* LEFT */
+.left{flex:1;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;}
+.left-inner{text-align:center;padding:48px;}
+
+.logo{font-family:"Cormorant Garamond",serif;font-size:80px;font-weight:700;line-height:1;
+  background:linear-gradient(135deg,#f5c842,#f07832,#f5c842);background-size:300% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shine 5s linear infinite;}
+@keyframes shine{to{background-position:300% center;}}
+
+.tagline{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-top:8px;margin-bottom:52px;}
+
+/* FOOD TICKER - same as home page */
+.food-ticker{overflow:hidden;width:320px;margin:0 auto 48px;position:relative;}
+.food-ticker::before,.food-ticker::after{content:"";position:absolute;top:0;bottom:0;width:40px;z-index:2;}
+.food-ticker::before{left:0;background:linear-gradient(90deg,var(--bg),transparent);}
+.food-ticker::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent);}
+.ticker-track{display:flex;gap:0;animation:tickScroll 18s linear infinite;width:max-content;}
+.ticker-track:hover{animation-play-state:paused;}
+.tick-item{display:flex;align-items:center;gap:8px;padding:6px 16px;border-right:1px solid var(--border);white-space:nowrap;}
+.tick-item span:first-child{font-size:20px;animation:tickFloat 2s ease-in-out infinite;}
+.tick-item:nth-child(2n) span:first-child{animation-delay:-1s;}
+.tick-item span:last-child{font-size:12px;color:var(--muted);}
+@keyframes tickScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes tickFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+
+.feats{display:flex;flex-direction:column;gap:14px;align-items:flex-start;text-align:left;}
+.feat{display:flex;align-items:center;gap:14px;opacity:0;animation:featSlide 0.5s ease forwards;}
+.feat:nth-child(1){animation-delay:0.4s;}.feat:nth-child(2){animation-delay:0.6s;}
+.feat:nth-child(3){animation-delay:0.8s;}.feat:nth-child(4){animation-delay:1.0s;}
+@keyframes featSlide{to{opacity:1;transform:none;}from{opacity:0;transform:translateX(-20px);}}
+.feat-ic{width:38px;height:38px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform 0.2s;}
+.feat:hover .feat-ic{transform:scale(1.15) rotate(-5deg);}
+.feat-text{font-size:14px;color:var(--muted);}
+
+/* RIGHT */
+.right{width:500px;background:rgba(12,12,12,0.97);backdrop-filter:blur(40px);border-left:1px solid var(--border);display:flex;align-items:center;justify-content:center;padding:60px 52px;position:relative;z-index:1;animation:rightSlide 0.7s cubic-bezier(0.16,1,0.3,1);}
+@keyframes rightSlide{from{transform:translateX(80px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.right::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);}
+.form{width:100%;}
+.form-title{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:700;line-height:1;margin-bottom:6px;}
+.form-sub{color:var(--muted);font-size:14px;margin-bottom:40px;}
+.tabs{display:flex;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:36px;}
+.tab{flex:1;padding:12px;text-align:center;border-radius:11px;cursor:pointer;font-size:14px;font-weight:500;color:var(--muted);transition:all 0.35s;border:none;background:none;font-family:"Outfit",sans-serif;position:relative;overflow:hidden;}
+.tab.active{color:#050505;}
+.tab.active::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--accent2));z-index:-1;border-radius:11px;animation:tabPop 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes tabPop{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.field{margin-bottom:22px;}
+.field label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:9px;}
+.field input{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text);padding:15px 18px;border-radius:13px;font-size:14px;font-family:"Outfit",sans-serif;outline:none;transition:all 0.3s;}
+.field input:focus{border-color:var(--accent);background:rgba(245,200,66,0.025);box-shadow:0 0 0 4px rgba(245,200,66,0.05);}
+.field input::placeholder{color:#2a2a2a;}
+.btn{width:100%;padding:17px;border:none;border-radius:13px;font-size:15px;font-weight:600;font-family:"Outfit",sans-serif;cursor:pointer;margin-top:8px;position:relative;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;}
+.btn-bg,.btn-bg2{position:absolute;inset:0;border-radius:13px;}
+.btn-bg{background:linear-gradient(135deg,var(--accent),var(--accent2));}
+.btn-bg2{background:linear-gradient(135deg,var(--accent2),#ffd700);opacity:0;transition:opacity 0.3s;}
+.btn:hover .btn-bg2{opacity:1;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(245,200,66,0.3);}
+.btn span{position:relative;z-index:1;color:#050505;}
+.msg{margin-top:18px;padding:13px 16px;border-radius:12px;font-size:13px;display:none;animation:msgPop 0.35s ease;}
+@keyframes msgPop{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:none;}}
+.msg.success{background:rgba(72,199,142,0.07);color:#48c78e;border:1px solid rgba(72,199,142,0.15);}
+.msg.error{background:rgba(240,60,60,0.07);color:#f05050;border:1px solid rgba(240,60,60,0.15);}
+#signupForm{display:none;}
+@media(max-width:900px){.left{display:none;}.right{width:100%;border-left:none;}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="glow g1"></div><div class="glow g2"></div>
+
+<div class="left">
+  <div class="left-inner">
+    <div class="logo">SmartChef</div>
+    <div class="tagline">AI Powered Recipe Discovery</div>
+    <div class="food-ticker">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+    <div class="feats">
+      <div class="feat"><div class="feat-ic">&#128247;</div><div class="feat-text">Upload any food photo</div></div>
+      <div class="feat"><div class="feat-ic">&#129302;</div><div class="feat-text">AI detects ingredients instantly</div></div>
+      <div class="feat"><div class="feat-ic">&#127869;</div><div class="feat-text">Match from 5,938 recipes</div></div>
+      <div class="feat"><div class="feat-ic">&#10084;</div><div class="feat-text">Save your favourites</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="right">
+  <div class="form">
+    <div class="form-title">Welcome back</div>
+    <div class="form-sub">Sign in to your SmartChef account</div>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('login')">Login</button>
+      <button class="tab" onclick="showTab('signup')">Sign Up</button>
+    </div>
+    <div id="loginForm">
+      <div class="field"><label>Email</label><input type="email" id="lEmail" placeholder="chef@email.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="lPass" placeholder="password"></div>
+      <button class="btn" onclick="login()"><div class="btn-bg"></div><div class="btn-bg2"></div><span>Sign In &#8594;</span></button>
+    </div>
+    <div id="signupForm">
+      <div class="field"><label>Username</label><input type="text" id="sUser" placeholder="master_chef"></div>
+      <div class="field"><label>Email</label><input type="email" id="sEmail" placeholder="chef@email.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="sPass" placeholder="password"></div>
+      <button class="btn" onclick="signup()"><div class="btn-bg"></div><div class="btn-bg2"></div><span>Create Account &#8594;</span></button>
+    </div>
+    <div class="msg" id="msg"></div>
+  </div>
+</div>
+
+<script>
+// SAME PARTICLE SYSTEM as other pages
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}resize();addEventListener('resize',resize);
+const pts=[];for(let i=0;i<60;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+0.3,s:Math.random()*0.2+0.05,op:Math.random()*0.25+0.05,dr:(Math.random()-.5)*0.1});
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(245,200,66,'+p.op+')';ctx.fill();p.y-=p.s;p.x+=p.dr;if(p.y<0){p.y=canvas.height;p.x=Math.random()*canvas.width;}});requestAnimationFrame(draw);}draw();
+
+// FOOD TICKER - same as home
+const foods=[{e:'&#127813;',n:'Tomato'},{e:'&#129745;',n:'Garlic'},{e:'&#127799;',n:'Onion'},{e:'&#129383;',n:'Carrot'},{e:'&#127822;',n:'Brinjal'},{e:'&#127807;',n:'Corn'},{e:'&#129382;',n:'Broccoli'},{e:'&#127815;',n:'Potato'},{e:'&#127798;',n:'Chilli'},{e:'&#129361;',n:'Avocado'},{e:'&#127812;',n:'Mushroom'},{e:'&#129384;',n:'Spinach'}];
+const track=document.getElementById('tickerTrack');
+[...foods,...foods].forEach(f=>{const d=document.createElement('div');d.className='tick-item';d.innerHTML='<span>'+f.e+'</span><span>'+f.n+'</span>';track.appendChild(d);});
+
+// FORM
+function showTab(t){
+  document.getElementById('loginForm').style.display=t==='login'?'block':'none';
+  document.getElementById('signupForm').style.display=t==='signup'?'block':'none';
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',(t==='login'&&i===0)||(t==='signup'&&i===1)));
+  document.querySelector('.form-title').textContent=t==='login'?'Welcome back':'Join SmartChef';
+  document.querySelector('.form-sub').textContent=t==='login'?'Sign in to your SmartChef account':'Start discovering recipes for free';
+  document.getElementById('msg').style.display='none';
+}
+function showMsg(txt,type){const m=document.getElementById('msg');m.textContent=txt;m.className='msg '+type;m.style.display='block';}
+async function login(){
+  const e=document.getElementById('lEmail').value,p=document.getElementById('lPass').value;
+  if(!e||!p)return showMsg('Please fill in all fields','error');
+  const fd=new URLSearchParams();fd.append('username',e);fd.append('password',p);
+  try{
+    const r=await fetch('http://127.0.0.1:8000/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd});
+    const d=await r.json();
+    if(r.ok){localStorage.setItem('token',d.access_token);showMsg('Login successful! Redirecting...','success');setTimeout(()=>{document.body.style.transition='opacity 0.5s';document.body.style.opacity='0';setTimeout(()=>window.location.replace('home.html'),500);},700);}
+    else showMsg(d.detail||'Login failed','error');
+  }catch{showMsg('Server not reachable. Is the backend running?','error');}
+}
+async function signup(){
+  const u=document.getElementById('sUser').value,e=document.getElementById('sEmail').value,p=document.getElementById('sPass').value;
+  if(!u||!e||!p)return showMsg('Please fill in all fields','error');
+  try{
+    const r=await fetch('http://127.0.0.1:8000/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,email:e,password:p})});
+    const d=await r.json();
+    if(r.ok){showMsg('Account created! Please login.','success');setTimeout(()=>showTab('login'),1500);}
+    else showMsg(d.detail||'Signup failed','error');
+  }catch{showMsg('Server not reachable. Is the backend running?','error');}
+}
+</script>
+</body>
+</html>
